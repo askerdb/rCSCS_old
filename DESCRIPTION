@@ -1,0 +1,11 @@
+Package: rCSCS
+Type: Package
+Title: R implementation of CSCS distance metric (Title Case)
+Version: 0.1.0
+Author: Asker Brejnrod
+Maintainer: The package maintainer <asker.brejnrod@sund.ku.dk>
+Description: This package provides an implementation of the CSCS distance described in Sedio et. al 2016.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Depends: foreach

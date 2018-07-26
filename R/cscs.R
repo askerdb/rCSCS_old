@@ -16,6 +16,10 @@ distance_cscs <- function(features, css, cosine_threshold = 0.6, weighted = T, v
     css_tmp <- css[feature_union,feature_union]
     a <-  features[feature_union,i]/sum(as.numeric(features[feature_union,i]))
     b <- features[feature_union,j]/sum(as.numeric(features[feature_union,j]))
+    if (weighted == FALSE){
+      a[a > 0] <- 1
+      b[b > 0] <- 1
+    }
     abt <- a %*% t(b)
     aat <- a %*% t(a)
     bbt <- tcrossprod(b, b)

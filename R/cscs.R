@@ -1,6 +1,21 @@
 library(foreach)
 
-distance_cscs <- function(features, css, cosine_threshold = 0.6, weighted = T, verbose = F){
+#' Calculate CSCS distance
+#'
+#' @param features Matrix of feature intensities in each sample (pxn)
+#' @param css Square matrix of cosine similarities of features (pxp)
+#' @param dissimilarity Output dissimilarity matrix
+#' @param cosine_threshold Only include features below this threshold
+#' @param weighted Weight features by intensity (TRUE) or absence/presence (FALSE)
+#' @param verbose Print extra details
+#'
+#' @details The value of cosine_threshold is 0.6 in Sedio et al. but for certain applications other values might be better.
+#' @references Sedio et al, 2016
+#' @return A pxp matrix of CSCS distances
+#' @export
+#'
+#' @examples distance_cscs(GEfeatures, GEcss)
+distance_cscs <- function(features, css, dissimilarity = F, cosine_threshold = 0.6, weighted = T, verbose = F){
   stopifnot(nrow(features) == nrow(css))
   diag(css) <- 1
   css[css < cosine_threshold] <- 0
@@ -34,10 +49,13 @@ distance_cscs <- function(features, css, cosine_threshold = 0.6, weighted = T, v
   row.names(distmt) <- sample_names
 
   # Make dissimilarity
+  if (dissimilarity == T){
   ones = matrix(data = rep(1, nrow(distmt) * ncol(distmt)),nrow = nrow(distmt), ncol = ncol(distmt))
   distmt = ones - distmt
   diag(distmt) <- 0
+  }
 
+  diag(distmt) <- 1
   return(distmt)
 
 }

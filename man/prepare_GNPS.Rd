@@ -4,12 +4,14 @@
 \alias{prepare_GNPS}
 \title{prepare_GNPS}
 \usage{
-prepare_GNPS(ID, dir = ".")
+prepare_GNPS(ID, dir = ".", select = T)
 }
 \arguments{
 \item{ID}{GNPS ID to prepare}
 
 \item{dir}{Path to put GNPS files}
+
+\item{select}{Only output features in the feature table found in the CSS matrix}
 }
 \value{
 A list of a feature matrix and a chemical similarity matrix (CSS)

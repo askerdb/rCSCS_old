@@ -30,6 +30,12 @@ Calculate CSCS distance
 The value of cosine_threshold is 0.6 in Sedio et al. but for certain applications other values might be better.
 }
 \examples{
+
+#Get arbitrary GNPS project
+gnps <- prepare_GNPS("0310e20491314ddbbf12d56b592548b4")
+dist <- distance_cscs(gnps$features, gnps$css)
+
+#GlobalEuphorbia data
 distance_cscs(GEfeatures, GEcss)
 }
 \references{

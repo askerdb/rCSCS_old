@@ -14,7 +14,14 @@ library(foreach)
 #' @return A pxp matrix of CSCS distances
 #' @export
 #'
-#' @examples distance_cscs(GEfeatures, GEcss)
+#' @examples
+#'
+#' #Get arbitrary GNPS project
+#' gnps <- prepare_GNPS("0310e20491314ddbbf12d56b592548b4")
+#' dist <- distance_cscs(gnps$features, gnps$css)
+#'
+#' #GlobalEuphorbia data
+#' distance_cscs(GEfeatures, GEcss)
 distance_cscs <- function(features, css, dissimilarity = F, cosine_threshold = 0.6, weighted = T, verbose = F){
   stopifnot(nrow(features) == nrow(css))
   diag(css) <- 1

@@ -27,7 +27,7 @@ distance_cscs <- function(features, css, dissimilarity = F, cosine_threshold = 0
   diag(css) <- 1
   css[css < cosine_threshold] <- 0
   css <- as.matrix(css)
-  sample_names <- colnames(features)[-1]
+  sample_names <- colnames(features)
   distm <- matrix(0, nrow = length(sample_names), ncol = length(sample_names),
                   dimnames = list(sample_names, sample_names))
   spn <- combn(sample_names, 2, simplify=FALSE)

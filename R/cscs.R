@@ -63,6 +63,6 @@ distance_cscs <- function(features, css, dissimilarity = F, cosine_threshold = 0
   }
 
   diag(distmt) <- 1
-  return(distmt)
+  return(as.dist(distmt))
 
 }

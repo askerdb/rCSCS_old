@@ -1,5 +1,5 @@
 library(reshape2)
-
+library(igraph)
 
 #' download_GNPS
 #'
@@ -21,12 +21,13 @@ download_GNPS <- function(ID, dir){
   #RCurl::close(f)
   system(paste0('curl -d "" \"', url, '\" -o ', temp_gnps), show.output.on.console = F)
   print(paste0('curl -d "" ', url, ' -o ', temp_gnps))
-  unzip(temp_gnps, exdir = dir)
-  files <- Sys.glob(file.path(dir, "*"))
+  unzip(temp_gnps, exdir = paste(dir,"/",ID,sep=""))
+  files <- Sys.glob(file.path(paste(dir,"/",ID,sep=""), "*"))
   netattr <- list.files(grep("clusterinfosummarygroup_attributes_withIDs_withcomponentID", files, value = T), full.names = T)
   buckettable <- grep("download_cluster_buckettable-main.tsv", files, value = T)
   edges <- list.files(grep("networkedges_selfloop", files, value = T), full.names = T)
-  return(list(buckettable = buckettable, edges = edges, attr = netattr))
+  ids <- list.files(paste(dir,"/",ID,"/","clusterinfosummarygroup_attributes_withIDs",sep=""), full.names = T)
+  return(list(buckettable = buckettable, edges = edges, attr = netattr, ids = ids))
 }
 
 
@@ -42,10 +43,12 @@ download_GNPS <- function(ID, dir){
 #' @examples prepare_GNPS("0310e20491314ddbbf12d56b592548b4")
 prepare_GNPS <- function(ID, dir = ".", select = T){
   gnps <- download_GNPS(ID, dir)
-  features = read.table(gnps$buckettable, sep = "\t", header=T, row.names=1, comment.char="")
+  features <- read.table(gnps$buckettable, sep = "\t", header=T, row.names=1, comment.char="")
   csslong <- read.table(gnps$edges, header=T)
-  css <- acast(csslong, CLUSTERID1~CLUSTERID2, value.var="Cosine")
-  css[is.na(css)] <- 0
-  features <- features[row.names(features) %in% row.names(css),]
+  
+  g <- graph.data.frame(csslong, directed=FALSE)
+  css <- get.adjacency(g, attr="Cosine", sparse=FALSE)
+  diag(css) <- 1
+
   return(list(features = features, css = css))
 }

@@ -8,4 +8,6 @@ Description: This package provides an implementation of the CSCS distance descri
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-Depends: foreach
+Imports: 
+  foreach,
+  igraph

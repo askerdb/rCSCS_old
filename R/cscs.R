@@ -1,5 +1,5 @@
 library(foreach)
-
+#' @import jsonlite
 #' Calculate CSCS distance
 #'
 #' @param features Matrix of feature intensities in each sample (pxn)
@@ -23,6 +23,7 @@ library(foreach)
 #' #GlobalEuphorbia data
 #' distance_cscs(GEfeatures, GEcss)
 distance_cscs <- function(features, css, dissimilarity = F, cosine_threshold = 0.6, weighted = T, verbose = F){
+
   stopifnot(nrow(features) == nrow(css))
   diag(css) <- 1
   css[css < cosine_threshold] <- 0
@@ -31,7 +32,7 @@ distance_cscs <- function(features, css, dissimilarity = F, cosine_threshold = 0
   distm <- matrix(0, nrow = length(sample_names), ncol = length(sample_names),
                   dimnames = list(sample_names, sample_names))
   spn <- combn(sample_names, 2, simplify=FALSE)
-  distlist <- foreach::foreach( pair = spn) foreach::`%dopar%` {
+  distlist <- foreach::foreach( pair = spn) %dopar% {
     i <- pair[1]
     j <- pair[2]
     feature_union <- which(rowSums(features[,c(i,j)]) > 0)

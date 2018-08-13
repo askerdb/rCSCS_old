@@ -74,7 +74,7 @@ distance_cscs_mh <- function(features, css, dissimilarity = F, cosine_threshold 
   distm <- matrix(0, nrow = length(sample_names), ncol = length(sample_names),
                   dimnames = list(sample_names, sample_names))
   spn <- combn(sample_names, 2, simplify=FALSE)
-  distlist <- foreach( pair = spn) %dopar% {
+  distlist <- foreach::foreach( pair = spn) %dopar% {
     i <- pair[1]
     j <- pair[2]
     feature_union <- which(rowSums(features[,c(i,j)]) > 0)

@@ -46,7 +46,7 @@ prepare_GNPS <- function(ID, dir = ".", select = T){
   features <- read.table(gnps$buckettable, sep = "\t", header=T, row.names=1, comment.char="")
   csslong <- read.table(gnps$edges, header=T)
   
-  g <- graph.data.frame(csslong, directed=FALSE)
+  g <- igraph::graph.data.frame(csslong, directed=FALSE)
   css <- get.adjacency(g, attr="Cosine", sparse=FALSE)
   diag(css) <- 1
 

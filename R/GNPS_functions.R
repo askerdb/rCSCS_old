@@ -47,7 +47,7 @@ prepare_GNPS <- function(ID, dir = ".", select = T){
   csslong <- read.table(gnps$edges, header=T)
   
   g <- igraph::graph.data.frame(csslong, directed=FALSE)
-  css <- get.adjacency(g, attr="Cosine", sparse=FALSE)
+  css <- igraph::get.adjacency(g, attr="Cosine", sparse=FALSE)
   diag(css) <- 1
 
   return(list(features = features, css = css))

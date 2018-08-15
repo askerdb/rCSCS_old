@@ -22,7 +22,11 @@ library(foreach)
 #' #GlobalEuphorbia data
 #' distance_cscs(GEfeatures, GEcss)
 #' @importFrom foreach %dopar%
-distance_cscs <- function(features, css, dissimilarity = F, cosine_threshold = 0.6, weighted = T, verbose = F){
+distance_cscs <- function(features, css, dissimilarity = F, cosine_threshold = 0.6, weighted = T, verbose = F, normalize = T){
+  
+  if (normalize==T){
+    features <- apply(features, 2, function(x) x/sum(as.numeric(x)))
+  }
 
   stopifnot(nrow(features) == nrow(css))
   diag(css) <- 1
@@ -35,10 +39,10 @@ distance_cscs <- function(features, css, dissimilarity = F, cosine_threshold = 0
   distlist <- foreach::foreach( pair = spn) %dopar% {
     i <- pair[1]
     j <- pair[2]
-    feature_union <- which(rowSums(features[,c(i,j)]) > 0)
+    feature_union <- rownames(features)[which(rowSums(features[,c(i,j)]) > 0)]
     css_tmp <- css[feature_union,feature_union]
-    a <-  features[feature_union,i]/sum(as.numeric(features[feature_union,i]))
-    b <- features[feature_union,j]/sum(as.numeric(features[feature_union,j]))
+    a <-  features[feature_union,i]
+    b <- features[feature_union,j]
     if (weighted == FALSE){
       a[a > 0] <- 1
       b[b > 0] <- 1

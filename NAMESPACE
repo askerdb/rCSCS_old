@@ -3,3 +3,4 @@
 export(distance_cscs)
 export(download_GNPS)
 export(prepare_GNPS)
+importFrom(foreach,"%dopar%")

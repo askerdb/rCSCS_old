@@ -45,7 +45,7 @@ distance_cscs <- function(features, css, dissimilarity = F, cosine_threshold = 0
     }
     abt <- a %*% t(b)
     aat <- a %*% t(a)
-    bbt <- tcrossprod(b, b)
+    bbt <- b %*% t(b)
     cssAB <- css_tmp * abt
     d <- sum(cssAB)/max(sum(css_tmp * aat), sum(css_tmp * bbt))
   }

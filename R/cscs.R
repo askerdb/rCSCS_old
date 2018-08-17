@@ -59,12 +59,14 @@ distance_cscs <- function(features, css, dissimilarity = T, cosine_threshold = 0
   distmt[lower.tri(distmt)] <- as.numeric(distlist)
   colnames(distmt) <- sample_names
   row.names(distmt) <- sample_names
-  diag(distmt) <- 1
+  
   # Make dissimilarity
   if (dissimilarity == T){
   distmt <- 1 - distmt
+  diag(distmt) <- 0
   return(as.dist(distmt))
   }
+  diag(distmt) <- 1
   return(distmt)
 }
 

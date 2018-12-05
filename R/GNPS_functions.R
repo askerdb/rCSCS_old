@@ -42,6 +42,7 @@ prepare_css <- function(edge_path){
 #' @param select Only output features in the feature table found in the CSS matrix
 #' @return A list of a feature matrix and a chemical similarity matrix (CSS)
 #' @export
+#' @import RCurl
 #'
 #' @examples prepare_GNPS("0310e20491314ddbbf12d56b592548b4")
 
@@ -51,3 +52,66 @@ prepare_GNPS <- function(ID, dir = ".", select = T){
   css <- prepare_css(gnps$edges)
   return(list(features = features, css = css))
 }
+
+#' Download buckettable from GNPS
+#'
+#' @param id GNPS task ID
+#'
+#' @return The downloaded file is written to disk
+#' @export
+#'
+#' @examples
+#' 
+download_buckettable <- function(id, path = "buckettable.csv"){
+  file = paste0("http://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",id,"&block=main&file=cluster_buckets/")
+  download_file(file, path)
+}
+
+#' Download edges from GNPS
+#'
+#' @param id GNPS task ID
+#'
+#' @return The downloaded file is written to disk
+#' @export
+#'
+#' @examples
+#' 
+
+download_edges <- function(id, path = "edges.txt"){
+  file = paste0("http://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",id,"&block=main&file=networkedges_selfloop/")
+  download_file(file, path)
+}
+#' Download MGF file from GNPS
+#'
+#' @param id GNPS task ID
+#'
+#' @return The downloaded file is written to disk
+#' @export
+#'
+#' @examples
+#' 
+
+download_mgf <- function(id, path = "ions.mgf"){
+  file = paste0("http://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",id,"&block=main&file=spectra/specs_ms.mgf")
+  download_file(file, path)
+}
+
+#' Download and save a file
+#'
+#' @param file URL to the file
+#' @param path Path to save the file
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' 
+download_file <- function(file, path = "NULL"){
+  if (is.null(path)){
+    error("Must enter a path")
+  }
+  f = CFILE(path, mode="wb")
+  curlPerform(url = file, writedata = f@ref)
+  close(f)
+}
+

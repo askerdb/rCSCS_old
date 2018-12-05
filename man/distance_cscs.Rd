@@ -4,8 +4,8 @@
 \alias{distance_cscs}
 \title{Calculate CSCS distance}
 \usage{
-distance_cscs(features, css, dissimilarity = F, cosine_threshold = 0.6,
-  weighted = T, verbose = F)
+distance_cscs(features, css, dissimilarity = T, cosine_threshold = 0.6,
+  weighted = T, verbose = F, normalize = T)
 }
 \arguments{
 \item{features}{Matrix of feature intensities in each sample (pxn)}
